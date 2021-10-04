@@ -1,0 +1,30 @@
+.game{
+  .game-board{
+    display: table;
+    border: 15px solid black;
+    .game-board-row{
+      display: table-row;
+    }
+    .game-board-cell{
+      display: table-cell;
+      width: 15px;
+      height: 15px;
+    }
+    .snake{
+      background-color: green;
+      opacity: 0.8;
+    }
+    .empty{
+      background-color: white;
+    }
+    .food{
+      background-color: blue;
+    }
+    .snake-head{
+      background-color: green;
+      opacity: 1;
+      border: lime solid-1px;
+    }
+  }
+
+}
