@@ -3,7 +3,7 @@ import React from 'react';
 import * as bg from '../BoardGen/BoardGenServie'
 import './Board.scss'
 import { useEffect, useState, useRef } from 'react';
-
+import {AiOutlineArrowUp, AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlineArrowDown} from 'react-icons/ai'
 const Board = () =>{
   const initBoardSize = 20
   const [board, setBoard] = useState(()=> bg.InitiBoard(initBoardSize))
@@ -85,14 +85,25 @@ const Board = () =>{
 
   return <div className="game">
     <div>Score : {board.score}</div>
-
-      <div className="game-board" ref={boardEl}>
-      {board.cells.map((row, rowIndex)=>
-      <div key={rowIndex} className="game-board-row">
-        {row.map((col, colIndex) => <div key={colIndex} className={`game-board-cell ${getCellClass(col)}`} style={{opacity:getSnakeGradient(col, rowIndex, colIndex)}}></div>)}
+      <div>
+        <button style={{width: 'calc(100% - 84px)',marginRight:0}} className="ui button" onClick={()=>update(bg.Direction.Up)}><AiOutlineArrowUp/></button>
       </div>
-      )}
-    </div>
+      <div style={{display:'flex', alignItems:'stretch'}}>
+        <button style={{width:'38px', marginRight:0}} className="ui button" onClick={()=>update(bg.Direction.Left)}><AiOutlineArrowLeft/></button>
+          <div className="game-board" ref={boardEl}>
+            {board.cells.map((row, rowIndex)=>
+            <div key={rowIndex} className="game-board-row">
+              {row.map((col, colIndex) => <div key={colIndex} className={`game-board-cell ${getCellClass(col)}`} style={{opacity:getSnakeGradient(col, rowIndex, colIndex)}}></div>)}
+            </div>
+            )}
+          </div>
+        <button style={{width:'38px', marginRight:0}} className="ui button" onClick={()=>update(bg.Direction.Right)}><AiOutlineArrowRight/></button>
+      </div>
+      <div>
+      <button style={{width:'calc(100% - 84px)',marginRight:0}} className="ui button" onClick={()=>update(bg.Direction.Down)}><AiOutlineArrowDown/></button>
+      </div>
+      
+
 
     
     {!running && <button className="ui button" onClick={()=> reset()} style={{marginTop:'10px'}}>Replay</button>}
