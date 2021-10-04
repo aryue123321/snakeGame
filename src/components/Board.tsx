@@ -50,7 +50,7 @@ const Board = () =>{
 
   document.addEventListener('keydown', activeCellListenser);
   return (()=> document.removeEventListener('keydown', activeCellListenser));
-
+// eslint-disable-next-line
 }, [running])
 
   function update(direction: bg.Direction){
