@@ -16,7 +16,7 @@ const Board = () =>{
       console.log('load')
       const interval = setInterval(()=>{
         setBoard(board => bg.getNextBoard(board))
-      }, 50)
+      }, 60)
       setMyInterval(interval);
       return (()=>clearInterval(interval))
     }
@@ -31,25 +31,27 @@ const Board = () =>{
  }, [board, myInterval])
 
  useEffect(() => {
-  function activeCellListenser(e:any){
+  function keyboardControlListener(e:KeyboardEvent){
     console.log(e.code)
     if(e.code === 'ArrowDown' || e.code === 'KeyS'){
       update(bg.Direction.Down)
     }
-    if(e.code === 'ArrowUp' || e.code === 'KeyW'){
+    else if(e.code === 'ArrowUp' || e.code === 'KeyW'){
       update(bg.Direction.Up)
     }
-    if(e.code === 'ArrowRight' || e.code === 'KeyD'){
+    else if(e.code === 'ArrowRight' || e.code === 'KeyD'){
       update(bg.Direction.Right)
     }
-    if(e.code === 'ArrowLeft' || e.code === 'KeyA'){
+    else if(e.code === 'ArrowLeft' || e.code === 'KeyA'){
       update(bg.Direction.Left)
     }
-    
+    else if (e.code === 'Space' && !running){
+      reset();
+    }
   }
 
-  document.addEventListener('keydown', activeCellListenser);
-  return (()=> document.removeEventListener('keydown', activeCellListenser));
+  document.addEventListener('keydown', keyboardControlListener);
+  return (()=> document.removeEventListener('keydown', keyboardControlListener));
 // eslint-disable-next-line
 }, [running])
 
@@ -106,7 +108,7 @@ const Board = () =>{
 
 
     
-    {!running && <button className="ui button" onClick={()=> reset()} style={{marginTop:'10px'}}>Replay</button>}
+    {!running && <button className="ui button" onClick={()=> reset()} style={{marginTop:'10px'}}>Replay (Space)</button>}
   </div>
 }
 
