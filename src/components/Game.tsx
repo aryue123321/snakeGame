@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as bg from '../BoardGen/BoardGenServie'
+import * as bg from '../BoardGen/BoardGenService'
 import './Game.scss'
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { Button, Zoom } from '@mui/material';
@@ -12,13 +12,13 @@ export type GameProps = {
 }
 
 const Game = ({setScore}:GameProps ) =>{
-  const initBoardSize = 20
+  const initBoardSize = 19
   const [board, setBoard] = useState(()=> bg.InitiBoard(initBoardSize))
   const [myInterval, setMyInterval] = useState<any>(null)
   const scoreSpanEl = useRef<HTMLSpanElement>(null)
 
   const [gameOver, setGameOver] = useState(false);
-
+ 
   const [watchingDead, setwatchingDead] = useState(false);
 
   const gotoLeaderboard = useCallback(()=>{
@@ -128,7 +128,16 @@ useEffect(()=>{
       <div className={gameOver ? "game-over game-board" : "game-board"}>
         {board.cells.map((row, rowIndex)=>
         <div key={rowIndex} className="game-board-row">
-          {row.map((col, colIndex) => <div key={colIndex} className={`game-board-cell ${getCellClass(col)}`} style={{opacity:getSnakeGradient(col, rowIndex, colIndex)}}></div>)}
+          {row.map((col, colIndex) => 
+            <div key={colIndex} 
+                 className={`game-board-cell ${getCellClass(col)}`} 
+                 style={{opacity:getSnakeGradient(col, rowIndex, colIndex)}}
+                 onClick={() => {
+                   const d = bg.calculateCellTouchDirection(board.cells.length, rowIndex, colIndex);
+                   setBoard(bg.updateDirection(board, d));
+                 }}
+                 >
+            </div>)}
         </div>
         )}
       </div>

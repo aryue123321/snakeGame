@@ -158,3 +158,12 @@ export const updateDirection = (gameBoard: GameBoard, direction: Direction): Gam
   }
   return newBoard
 }
+
+export const calculateCellTouchDirection = (boardSize:number, row:number, col: number):Direction => {
+  const distanceToRight = boardSize - row;
+  if(col > row){
+    return col < distanceToRight ? Direction.Up : Direction.Right;
+  }else{
+    return col < distanceToRight ? Direction.Left : Direction.Down;
+  }
+}
