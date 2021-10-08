@@ -11,7 +11,9 @@ import {
   HashRouter as Router,
   Switch,
   Route,
+  Link,
 } from 'react-router-dom'
+import { Button } from '@mui/material';
 
 
 function App() {
@@ -23,9 +25,13 @@ function App() {
       <CssBaseline>
         <AppBar position="static">
         <Toolbar variant="dense">
-          <Typography variant="h6" color="inherit" component="div">
-            sNAke
-          </Typography>
+          <Router>
+            <Button variant="text" color="inherit" component={Link} to="/" sx={{textTransform:'none'}}>
+              <Typography variant="h6">
+              sNAke
+              </Typography>
+            </Button>
+          </Router>
         </Toolbar>
         </AppBar>
           <Container maxWidth="sm" sx={{textAlign:'center'}}>

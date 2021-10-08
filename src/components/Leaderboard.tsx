@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 import './Leaderboard.scss'
 import {useHistory} from 'react-router-dom'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { db } from "../utils/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
@@ -31,6 +31,7 @@ const LeaderBoard = ({score}: LeaderBoardProps) => {
 
   const [scores, setScores] = useState<ScoreType[]>([]);
 
+  const highlightRow = useRef<HTMLTableRowElement>(null)
 
   const {highlightId} = useParams<any>()
   
@@ -48,6 +49,13 @@ const LeaderBoard = ({score}: LeaderBoardProps) => {
     
     //eslint-disable-next-line
   }, [])
+
+  useEffect(()=>{
+    if(highlightRow !== null && highlightRow.current !== null){
+      console.log(highlightRow)
+      highlightRow.current.scrollIntoView({block: "center"});
+    }
+  }, [scores])
 
   useEffect(()=>{
     const scores:ScoreType[] = []
@@ -80,14 +88,14 @@ const LeaderBoard = ({score}: LeaderBoardProps) => {
   }
 
   return <div className="leader-board">
-    
-    <TableContainer component={Paper}>
+    <h2>LeaderBoard</h2>
+    <TableContainer component={Paper} sx={{maxHeight: '550px'}}>
       <Table  aria-label="simple table">
-        <TableHead>
+        <TableHead sx={{position: 'sticky', top: 0, backgroundColor:"#1976d2"}}>
           <TableRow>
-            <TableCell sx={{width:'10%'}}>Rank</TableCell>
-            <TableCell align="right">Name</TableCell>
-            <TableCell  align="right">Score</TableCell>
+            <TableCell sx={{width:'10%',color:"white" }}>Rank</TableCell>
+            <TableCell align="center" sx={{width:'10%',color:"white" }}>Name</TableCell>
+            <TableCell  align="right" sx={{width:'10%',color:"white" }}>Score</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -95,11 +103,12 @@ const LeaderBoard = ({score}: LeaderBoardProps) => {
             <TableRow
               key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0}, ...isHighlight(row.id) }}
+              ref={highlightId === row.id ? highlightRow : null}
             >
               <TableCell component="th" scope="row">
                 {rowIndex+1}
               </TableCell>
-              <TableCell align="right">{row.name}</TableCell>
+              <TableCell align="center">{row.name}</TableCell>
               <TableCell align="right">{row.score}</TableCell>
             </TableRow>
           ))}
