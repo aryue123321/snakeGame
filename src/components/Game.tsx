@@ -13,7 +13,7 @@ export type GameProps = {
   setScore: React.Dispatch<React.SetStateAction<number>>
 }
 
-const Game = ({setScore, name, setName}:GameProps ) =>{
+const Game = ({setScore, ...props}:GameProps ) =>{
   const initBoardSize = 20
   const [board, setBoard] = useState(()=> bg.InitiBoard(initBoardSize))
   const [myInterval, setMyInterval] = useState<any>(null)
@@ -137,7 +137,7 @@ useEffect(()=>{
   }
 
   return <div className="game">
-    {watchingDead ? <ScoreForm score={board.score} name={name} setName={setName}></ScoreForm> : renderGameBoard()}
+    {watchingDead ? <ScoreForm score={board.score} {...props}></ScoreForm> : renderGameBoard()}
   </div>
 
 }

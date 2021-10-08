@@ -1,7 +1,7 @@
 import { Box, Button, CssBaseline, FormGroup } from "@mui/material";
 import TextField from "@mui/material/TextField/TextField";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {useHistory} from 'react-router-dom'
 import { collection, addDoc } from "firebase/firestore"; 
 import {db} from '../utils/firebase'
@@ -12,19 +12,30 @@ type ScoreFormProps={
   setName: React.Dispatch<React.SetStateAction<string>>
 }
 
+
 const ScoreForm =({score, name, setName}:ScoreFormProps)=>{
+
   const history = useHistory();
   const [isError, setIsError] = useState(false)
 
+  useEffect(()=>{
+    function keyboardControlListener(e:KeyboardEvent){
+      if (e.code === 'Escape'){
+        gotoLeaderboard()
+      }
+    }
+
+      document.addEventListener('keyup', keyboardControlListener);
+      return (()=> document.removeEventListener('keyup', keyboardControlListener));
+    
+    //eslint-disable-next-line
+  }, [])
 
   function handeSubmit(e:React.FormEvent<HTMLFormElement>){
     e.preventDefault();
-    console.log(name.length === 0, name.length)
     if(name.length === 0){
-      console.log(name) 
       setIsError(true)
     }else{
-      console.log(2121)
       const addData = async() =>{
         try {
           const docRef = await addDoc(collection(db, "Leaderboard"), {
@@ -32,7 +43,7 @@ const ScoreForm =({score, name, setName}:ScoreFormProps)=>{
             score
           });
           console.log("Document written with ID: ", docRef.id);
-          history.push(`/leaderboard?id=${docRef.id}`)
+          history.push(`/leaderboard/${docRef.id}`)
         } catch (e) {
           console.error("Error adding document: ", e);
         }
@@ -51,10 +62,15 @@ const ScoreForm =({score, name, setName}:ScoreFormProps)=>{
     setName(inputName)
   }
 
+  function gotoLeaderboard(){
+    history.push('/leaderboard')
+  }
+
   return <form onSubmit={(e)=>handeSubmit(e)}>
     <Box sx={{width:300}}>
       <CssBaseline></CssBaseline>
         <FormGroup>
+          <h2>Submit your score?</h2>
           <p>Your Score is : {score}</p>
         </FormGroup>
         <FormGroup>
@@ -69,7 +85,7 @@ const ScoreForm =({score, name, setName}:ScoreFormProps)=>{
             />
         </FormGroup>
         <FormGroup>
-          <Button type="submit">Submit</Button>
+          <Button type="submit">Submit</Button> <Button onClick={()=>gotoLeaderboard()} >Skip [Esc]</Button>
         </FormGroup>
       </Box>
     </form>

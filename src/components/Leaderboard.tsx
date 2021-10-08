@@ -8,7 +8,8 @@ import { db } from "../utils/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import Paper from '@mui/material/Paper';
-import { useLocation } from 'react-router-dom'
+import { useParams  } from 'react-router-dom'
+
 
 type LeaderBoardProps = {
   // setIsRunning: React.Dispatch<React.SetStateAction<boolean>>,
@@ -24,20 +25,21 @@ type ScoreType = {
 const LeaderBoard = ({score}: LeaderBoardProps) => {
   const history = useHistory()
 
-  function reset(){
+  function playAgain(){
     history.push("/")
   }
 
   const [scores, setScores] = useState<ScoreType[]>([]);
 
-  const  params = new URLSearchParams(useLocation().search)
 
-  const highlightId = params.get("id")
-
+  const {highlightId} = useParams<any>()
+  
+  console.log(highlightId)
+  
   useEffect(()=>{
     function keyboardControlListener(e:KeyboardEvent){
       if (e.code === 'Enter'){
-        reset()
+        playAgain()
       }
     }
 
@@ -105,7 +107,7 @@ const LeaderBoard = ({score}: LeaderBoardProps) => {
       </Table>
     </TableContainer>
     <Button variant="contained" sx={{marginTop:'5px'}}
-            onClick={()=> reset()} >
+            onClick={()=> playAgain()} >
             Play [Enter]
         </Button>
   </div>

@@ -8,7 +8,7 @@ import Container from '@mui/material/Container';
 import {useState} from 'react'
 import LeaderBoard from './components/Leaderboard';
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Switch,
   Route,
 } from 'react-router-dom'
@@ -38,7 +38,7 @@ function App() {
                 <Route path="/" exact >
                   <Game setScore={setScore} name={name} setName={setName}></Game>
                 </Route>
-                <Route path="/leaderBoard">
+                <Route path="/leaderBoard/:highlightId?/">
                   <LeaderBoard score={score}/>
                 </Route>
                 </Switch>
