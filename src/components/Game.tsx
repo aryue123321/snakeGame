@@ -3,7 +3,7 @@ import React from 'react';
 import * as bg from '../BoardGen/BoardGenService'
 import './Game.scss'
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { Button, Zoom } from '@mui/material';
+import { Button, Grid, Zoom } from '@mui/material';
 
 import ScoreForm from './ScoreForm';
 
@@ -132,14 +132,30 @@ useEffect(()=>{
             <div key={colIndex} 
                  className={`game-board-cell ${getCellClass(col)}`} 
                  style={{opacity:getSnakeGradient(col, rowIndex, colIndex)}}
-                 onClick={() => {
-                   const d = bg.calculateCellTouchDirection(board.cells.length, rowIndex, colIndex);
-                   setBoard(bg.updateDirection(board, d));
-                 }}
                  >
             </div>)}
         </div>
         )}
+      </div>
+      <div className="control-buttons">
+          <div>
+            <button 
+                onClick={()=>setBoard(bg.updateDirection(board, bg.Direction.Left))}>{"Left"}
+            </button>
+          </div>
+          <div className="up-down">
+              <button
+                onClick={()=>setBoard(bg.updateDirection(board, bg.Direction.Up))}>{"Up"}
+              </button>
+              <button
+                onClick={()=>setBoard(bg.updateDirection(board, bg.Direction.Down))}>{"Down"}
+              </button>
+          </div>
+          <div>
+              <button
+                onClick={()=>setBoard(bg.updateDirection(board, bg.Direction.Right))}>{"Right"}
+              </button>
+          </div>       
       </div>
     <Zoom in={gameOver} timeout={{enter: 2000}}>
       <Button variant="contained" onClick={()=> gotoLeaderboard()}>Continue [Enter] </Button>

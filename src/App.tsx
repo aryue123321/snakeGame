@@ -35,7 +35,7 @@ function App() {
         </Toolbar>
         </AppBar>
           <Container maxWidth="sm" sx={{textAlign:'center'}}>
-            <div style={{marginTop:'30px'}}>
+            <div style={{marginTop:'5px'}}>
             
               <Router>
               <Switch>

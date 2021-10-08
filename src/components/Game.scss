@@ -50,7 +50,7 @@
 
   .game-board{
     display: table;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     border: 20px solid black;
 
 
@@ -83,6 +83,28 @@
       background-color: green;
       opacity: 1;
       border: lime solid-1px;
+    }
+  }
+
+  .control-buttons{
+    button{
+      width: 50px;
+      height: 50px;
+      background-color: white;
+      border-radius: 1rem;
+      margin: 2px;
+    }
+    button:hover{
+      background-color: lightblue;
+      border: white;
+      color: white;
+    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .up-down{
+      display: flex;
+      flex-direction: column;
     }
   }
 
