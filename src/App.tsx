@@ -16,8 +16,6 @@ import {
 
 function App() {
 
-
-  const [name, setName] = useState('');
   const [score, setScore] = useState(0)
 
   return (
@@ -36,7 +34,7 @@ function App() {
               <Router>
               <Switch>
                 <Route path="/" exact >
-                  <Game setScore={setScore} name={name} setName={setName}></Game>
+                  <Game setScore={setScore} ></Game>
                 </Route>
                 <Route path="/leaderBoard/:highlightId?/">
                   <LeaderBoard score={score}/>

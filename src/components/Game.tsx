@@ -8,12 +8,10 @@ import { Button, Zoom } from '@mui/material';
 import ScoreForm from './ScoreForm';
 
 export type GameProps = {
-  name: string,
-  setName: React.Dispatch<React.SetStateAction<string>>,
   setScore: React.Dispatch<React.SetStateAction<number>>
 }
 
-const Game = ({setScore, ...props}:GameProps ) =>{
+const Game = ({setScore}:GameProps ) =>{
   const initBoardSize = 20
   const [board, setBoard] = useState(()=> bg.InitiBoard(initBoardSize))
   const [myInterval, setMyInterval] = useState<any>(null)
@@ -137,7 +135,7 @@ useEffect(()=>{
   }
 
   return <div className="game">
-    {watchingDead ? <ScoreForm score={board.score} {...props}></ScoreForm> : renderGameBoard()}
+    {watchingDead ? <ScoreForm score={board.score}></ScoreForm> : renderGameBoard()}
   </div>
 
 }

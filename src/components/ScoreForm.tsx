@@ -8,15 +8,20 @@ import {db} from '../utils/firebase'
 
 type ScoreFormProps={
   score:number,
-  name: string,
-  setName: React.Dispatch<React.SetStateAction<string>>
 }
 
+const key = "playerName"
 
-const ScoreForm =({score, name, setName}:ScoreFormProps)=>{
+const ScoreForm =({score}:ScoreFormProps)=>{
 
   const history = useHistory();
   const [isError, setIsError] = useState(false)
+
+  const [name, setName] = useState(()=>{
+    const playerName = localStorage.getItem(key);
+    return playerName ? playerName : "";
+  })
+
 
   useEffect(()=>{
     function keyboardControlListener(e:KeyboardEvent){
@@ -36,6 +41,7 @@ const ScoreForm =({score, name, setName}:ScoreFormProps)=>{
     if(name.length === 0){
       setIsError(true)
     }else{
+      localStorage.setItem(key, name);
       const addData = async() =>{
         try {
           const docRef = await addDoc(collection(db, "Leaderboard"), {
