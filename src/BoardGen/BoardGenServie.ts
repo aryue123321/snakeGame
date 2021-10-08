@@ -151,7 +151,6 @@ export const updateDirection = (gameBoard: GameBoard, direction: Direction): Gam
   {
     const nextCell = getNextCell(newBoard, direction)
     const snakeSecondCell = newBoard.snake[1];
-    console.log(nextCell, snakeSecondCell)
     if(nextCell.x !== snakeSecondCell.x || nextCell.y !== snakeSecondCell.y){
       newBoard.direction = direction;
       // return getNextBoard(newBoard);
