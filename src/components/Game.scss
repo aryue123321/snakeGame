@@ -1,5 +1,12 @@
+
 .game{
   text-align: -webkit-center;
+
+  $base-sec:0.3s;
+
+  @keyframes mymove {
+    50% {font-size: 2.5rem; color: black;}
+  }
 
   .score{
     font-size: 1.5rem;
@@ -10,9 +17,6 @@
     color: #1976d2;
     .number{
       animation: mymove 1s;
-      @keyframes mymove {
-        50% {font-size: 2.5rem; color: black;}
-      }
     }
     // span{
     //   font-size: 2rem;
@@ -69,6 +73,11 @@
     }
     .food{
       background-color: blue;
+      -moz-transition: all $base-sec ease-in;
+      -o-transition: all $base-sec ease-in;
+      -webkit-transition: all $base-sec ease-in;
+      transition: all $base-sec ease-in;
+      
     }
     .snake-head{
       background-color: green;

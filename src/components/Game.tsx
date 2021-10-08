@@ -2,7 +2,7 @@ import React from 'react';
 
 import * as bg from '../BoardGen/BoardGenServie'
 import './Game.scss'
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { Button, Zoom } from '@mui/material';
 
 import ScoreForm from './ScoreForm';
@@ -20,6 +20,12 @@ const Game = ({setScore}:GameProps ) =>{
   const [gameOver, setGameOver] = useState(false);
 
   const [watchingDead, setwatchingDead] = useState(false);
+
+  const gotoLeaderboard = useCallback(()=>{
+    setScore(board.score)
+    setwatchingDead(true);
+  }, [setScore, board.score])
+
   // load interval 
   useEffect(()=>{
     if(!gameOver){
@@ -42,6 +48,12 @@ const Game = ({setScore}:GameProps ) =>{
  // game keyboard controls
  useEffect(() => {
 
+  function update(direction: bg.Direction){
+    if(!gameOver){
+      setBoard(board => bg.updateDirection(board,direction ));
+    }
+  }
+
   function keyboardControlListener(e:KeyboardEvent){
     console.log(e.code)
     if(e.code === 'ArrowDown' || e.code === 'KeyS'){
@@ -62,7 +74,7 @@ const Game = ({setScore}:GameProps ) =>{
     document.addEventListener('keydown', keyboardControlListener);
     return (()=> document.removeEventListener('keydown', keyboardControlListener));
   }
-// eslint-disable-next-line
+ 
 }, [gameOver])
 
 useEffect(()=>{
@@ -75,8 +87,8 @@ useEffect(()=>{
     document.addEventListener('keyup', keyboardControlListener);
     return (()=> document.removeEventListener('keyup', keyboardControlListener));
   }
-  // eslint-disable-next-line
-}, [gameOver])
+   
+}, [gameOver, gotoLeaderboard])
 
 useEffect(()=>{
   if(board.score > 0){
@@ -89,11 +101,7 @@ useEffect(()=>{
   }
 }, [board.score])
 
-  function update(direction: bg.Direction){
-    if(!gameOver){
-      setBoard(board => bg.updateDirection(board,direction ));
-    }
-  }
+  
  
   function getCellClass(cellType: bg.BoardCellType):string{
     switch(cellType){
@@ -112,11 +120,7 @@ useEffect(()=>{
     return Math.max( (board.snake.length - index + 3)/(board.snake.length+3), 0.5)
   }
 
-  function gotoLeaderboard(){
-    setScore(board.score)
-    setwatchingDead(true);
 
-  }
 
   function renderGameBoard(){
     return (<>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@mui/material";
+import { Button, CircularProgress, Collapse, Fade } from "@mui/material";
 import './Leaderboard.scss'
 import {useHistory} from 'react-router-dom'
 
@@ -22,6 +22,8 @@ type ScoreType = {
   name: string
 }
 
+const collapseTimelapsed = 1500;
+
 const LeaderBoard = ({score}: LeaderBoardProps) => {
   const history = useHistory()
 
@@ -30,6 +32,8 @@ const LeaderBoard = ({score}: LeaderBoardProps) => {
   }
 
   const [scores, setScores] = useState<ScoreType[]>([]);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const highlightRow = useRef<HTMLTableRowElement>(null)
 
@@ -52,8 +56,8 @@ const LeaderBoard = ({score}: LeaderBoardProps) => {
 
   useEffect(()=>{
     if(highlightRow !== null && highlightRow.current !== null){
-      console.log(highlightRow)
-      highlightRow.current.scrollIntoView({block: "center"});
+
+      highlightRow.current.scrollIntoView({block: "center", behavior: "smooth"});
     }
   }, [scores])
 
@@ -77,7 +81,7 @@ const LeaderBoard = ({score}: LeaderBoardProps) => {
           })
 
           setScores(scores);
-
+          setIsLoading(false);
           console.log(scores)
       }
     getData();
@@ -87,38 +91,48 @@ const LeaderBoard = ({score}: LeaderBoardProps) => {
     return highlightId === id ? {backgroundColor:'lightblue'} : {}
   }
 
-  return <div className="leader-board">
-    <h2>LeaderBoard</h2>
-    <TableContainer component={Paper} sx={{maxHeight: '550px'}}>
-      <Table  aria-label="simple table">
-        <TableHead sx={{position: 'sticky', top: 0, backgroundColor:"#1976d2"}}>
-          <TableRow>
-            <TableCell sx={{width:'10%',color:"white" }}>Rank</TableCell>
-            <TableCell align="center" sx={{width:'10%',color:"white" }}>Name</TableCell>
-            <TableCell  align="right" sx={{width:'10%',color:"white" }}>Score</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {scores.map((row, rowIndex) => (
-            <TableRow
-              key={row.id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0}, ...isHighlight(row.id) }}
-              ref={highlightId === row.id ? highlightRow : null}
-            >
-              <TableCell component="th" scope="row">
-                {rowIndex+1}
-              </TableCell>
-              <TableCell align="center">{row.name}</TableCell>
-              <TableCell align="right">{row.score}</TableCell>
+  const renderTbody = ()=>{
+
+    return  <TableContainer component={Paper} sx={{maxHeight: '600px', overflowY:'scroll'}}>
+        <Table  aria-label="simple table">
+          <TableHead sx={{position: 'sticky', top: 0, backgroundColor:"#1976d2"}}>
+            <TableRow>
+              <TableCell sx={{width:'10%',color:"white" }}>Rank</TableCell>
+              <TableCell align="center" sx={{width:'10%',color:"white" }}>Name</TableCell>
+              <TableCell  align="right" sx={{width:'10%',color:"white" }}>Score</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    <Button variant="contained" sx={{marginTop:'5px'}}
-            onClick={()=> playAgain()} >
-            Play [Enter]
-        </Button>
+          </TableHead>
+          <TableBody>
+            {scores.map((row, rowIndex) => (
+              <TableRow
+                key={row.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0}, ...isHighlight(row.id) }}
+                ref={highlightId === row.id ? highlightRow : null}
+              >
+                <TableCell component="th" scope="row">
+                  {rowIndex+1}
+                </TableCell>
+                <TableCell align="center">{row.name}</TableCell>
+                <TableCell align="right">{row.score}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        </TableContainer>
+  }
+
+  return <div className="leader-board">
+          <h2>LeaderBoard</h2>
+          <Fade in={!isLoading} timeout={collapseTimelapsed}>
+            <div>
+              {renderTbody()}
+              <Button variant="contained" sx={{marginTop:'5px'}}
+                    onClick={()=> playAgain()} >
+                    Play [Enter]
+                </Button>
+            </div>
+          </Fade>
+        {isLoading && <CircularProgress/>}
   </div>
 }
 
